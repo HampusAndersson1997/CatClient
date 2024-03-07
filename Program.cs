@@ -1,13 +1,7 @@
-﻿global using global::System;
-global using global::System.Collections.Generic;
-global using global::System.IO;
-global using global::System.Linq;
-global using global::System.Net.Http;
-global using global::System.Threading;
-global using global::System.Threading.Tasks;
-using RestSharp;
-using Newtonsoft;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using RestSharp;
 using CatClient;
 
 namespace CatClient
@@ -18,8 +12,10 @@ namespace CatClient
 		{
 			ClientService service = new ClientService();
 			List<CatFact> catFacts = new List<CatFact>();
-            for (int i = 0; i < 5; i++)
-            {
+
+			// Gör 5 anrop för att hämta kattfakta och lägg till dem i en lista.
+			for (int i = 0; i < 5; i++)
+			{
 				RestResponse response = service.GetCatText("https://catfact.ninja/fact");
 				if (!string.IsNullOrEmpty(response.Content))
 				{
@@ -30,19 +26,21 @@ namespace CatClient
 					}
 					else
 					{
-						Console.Error.WriteLine("Failed to deserialize the cat fact.");
+						Console.Error.WriteLine("Kunde inte deserialisera kattfaktan.");
 					}
 				}
 				else
 				{
-					Console.Error.WriteLine("Received empty response content.");
+					Console.Error.WriteLine("Tomt svar mottaget.");
 				}
 			}
+
+			// Skriver ut varje kattfakta och dess längd.
 			foreach (CatFact catFact in catFacts)
 			{
-                Console.WriteLine("This is a catfact:" + catFact.Fact);
-                Console.WriteLine($"This cat fact was {catFact.Length} charachters long");
-            }
+				Console.WriteLine("Detta är en kattfakta: " + catFact.Fact);
+				Console.WriteLine($"Denna kattfakta var {catFact.Length} tecken lång.");
+			}
 		}
 	}
 }
