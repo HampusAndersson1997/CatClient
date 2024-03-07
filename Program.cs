@@ -21,8 +21,22 @@ namespace CatClient
             for (int i = 0; i < 5; i++)
             {
 				RestResponse response = service.GetCatText("https://catfact.ninja/fact");
-				CatFact catFact = JsonConvert.DeserializeObject<CatFact>(response.Content);
-				catFacts.Add(catFact);
+				if (!string.IsNullOrEmpty(response.Content))
+				{
+					var catFact = JsonConvert.DeserializeObject<CatFact>(response.Content);
+					if (catFact != null)
+					{
+						catFacts.Add(catFact);
+					}
+					else
+					{
+						Console.Error.WriteLine("Failed to deserialize the cat fact.");
+					}
+				}
+				else
+				{
+					Console.Error.WriteLine("Received empty response content.");
+				}
 			}
 			foreach (CatFact catFact in catFacts)
 			{

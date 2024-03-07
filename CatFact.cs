@@ -8,7 +8,7 @@ namespace CatClient
 {
 	internal class CatFact
 	{
-		public string Fact { get; set; }
+		public string? Fact { get; set; }
 		public int Length { get; set; }
 	}
 }
